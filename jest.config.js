@@ -1,19 +1,24 @@
 module.exports = {
   testEnvironment: "jsdom",
   moduleNameMapper: {
-    // mock CSS/SASS
+    // Mock CSS/SASS files
     "\\.(css|scss)$": "identity-obj-proxy",
-    // mock image imports to fileMock.js (you should already have this)
+    // Mock image imports
     "\\.(jpg|jpeg|png|gif|svg)$": "<rootDir>/__mocks__/fileMock.js",
-    // mock next/image
+    // Mock next/image
     "^next/image$": "<rootDir>/__mocks__/next/image.js",
-    // your path aliases
+    // Path aliases for components/services
     "^@/components/(.*)$": "<rootDir>/components/$1",
     "^@/services/(.*)$": "<rootDir>/services/$1",
   },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   transform: {
-    "^.+\\.(js|ts|tsx)$": "babel-jest",
+    "^.+\\.(ts|tsx)$": "ts-jest",
   },
   testPathIgnorePatterns: ["/node_modules/", "/.next/"],
+  globals: {
+    "ts-jest": {
+      tsconfig: "<rootDir>/tsconfig.json",
+    },
+  },
 };
