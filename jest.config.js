@@ -18,7 +18,7 @@ module.exports = {
   testPathIgnorePatterns: ["/node_modules/", "/.next/"],
   globals: {
     "ts-jest": {
-      tsconfig: "<rootDir>/tsconfig.json",
+      tsconfig: "<rootDir>/tsconfig.test.json",
     },
   },
 };
