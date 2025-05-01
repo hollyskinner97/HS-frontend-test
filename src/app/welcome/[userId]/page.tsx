@@ -1,11 +1,14 @@
 import { fetchUserComms } from "@/services/api";
+import Image from "next/image";
+import LunaImage from "../../../assets/Luna.jpg";
 
 interface Props {
   params: { userId: string };
 }
 
 export default async function UserCommsPage({ params }: Props) {
-  const commsData = await fetchUserComms(params.userId);
+  const { userId } = params;
+  const commsData = await fetchUserComms(userId);
 
   if (!commsData) {
     return (
@@ -14,47 +17,68 @@ export default async function UserCommsPage({ params }: Props) {
   }
 
   return (
-    <div className="flex flex-col sm:flex-row justify-center items-center min-h-screen w-full px-4">
-      {/* Image Placeholder */}
-      <div className="w-full sm:w-[40%] h-auto sm:h-[350px] flex justify-center">
-        <div className="w-32 h-32 sm:w-full sm:h-full bg-gray-300 rounded-full sm:rounded-lg sm:mr-4 overflow-hidden">
-          {/* Placeholder for the image */}
-        </div>
+    <div className="relative flex flex-col sm:flex-row justify-center items-center min-h-screen w-full px-4">
+      {/* Desktop Image */}
+      <div className="hidden sm:block sm:w-[350px] sm:h-[450px] flex-shrink-0 rounded-md overflow-visible">
+        <Image
+          src={LunaImage}
+          alt="Luna"
+          className="w-full h-full object-cover rounded-md"
+          priority
+        />
       </div>
 
       {/* Comms Box */}
-      <div className="relative max-w-lg w-full sm:w-[60%] bg-white shadow-lg rounded-lg p-6 text-gray-600 text-center sm:text-left">
-        {/* Free Gift Badge */}
+      <div className="relative bg-white rounded-md w-full max-w-md sm:max-w-2xl h-[450px] flex flex-col justify-between items-center px-4 py-20 text-gray-700 text-center sm:text-left border-2 border-gray-300 overflow-visible">
+        {/* Mobile circular image */}
+        <div className="sm:hidden absolute -top-14 z-10">
+          <Image
+            src={LunaImage}
+            alt="Luna"
+            className="w-28 h-28 object-cover rounded-full"
+            priority
+          />
+        </div>
+
+        {/* FREE GIFT - Desktop */}
         {commsData.freeGift && (
-          <span
-            className="absolute bg-pink-500 text-purple-900 font-bold px-3 py-1 text-xs rounded-sm
-            sm:top-0 sm:right-0 sm:translate-x-2 sm:-translate-y-2
-            bottom-0 left-1/2 transform -translate-x-1/2 translate-y-2"
-          >
+          <div className="hidden sm:block absolute -top-4 -right-4 bg-[#eda3f3] text-[#a20282] text-xs font-bold px-4 py-1.5 shadow-md rotate-[8deg]">
             FREE GIFT
-          </span>
+          </div>
         )}
 
-        {/* Title */}
-        <h2 className="text-2xl font-bold text-green-600">{commsData.title}</h2>
-
-        {/* Message */}
-        <p className="mt-2">{commsData.message}</p>
-
-        {/* Price */}
-        <p className="mt-4 text-lg font-semibold text-gray-800">
-          Total Price: £{commsData.totalPrice.toFixed(2)}
-        </p>
+        {/* Content */}
+        <div className="flex flex-col gap-3 sm:gap-4 mb-4">
+          <h2 className="text-2xl font-bold text-green-600">
+            {commsData.title}
+          </h2>
+          <p>{commsData.message}</p>
+          <p className="text-lg font-semibold">
+            Total price: £{commsData.totalPrice.toFixed(2)}
+          </p>
+        </div>
 
         {/* Buttons */}
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-          <button className="w-full sm:w-1/2 px-4 py-2 bg-green-600 text-white font-semibold rounded">
+        <div className="flex flex-row justify-center gap-4 mt-2 w-full">
+          <button className="w-1/2 px-4 py-2.5 bg-green-600 text-white font-semibold rounded-md">
             SEE DETAILS
           </button>
-          <button className="w-full sm:w-1/2 px-4 py-2 border border-green-600 text-green-600 font-semibold rounded">
+          <button className="w-1/2 px-4 py-2.5 border-2 border-green-600 text-green-600 font-semibold rounded-md">
             EDIT DELIVERY
           </button>
         </div>
+
+        {/* FREE GIFT - Mobile */}
+        {commsData.freeGift && (
+          <div className="sm:hidden absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-[#eda3f3] text-[#a20282] text-xs font-bold px-4 py-1.5 shadow-md rotate-[5deg]">
+            FREE GIFT
+          </div>
+        )}
+      </div>
+
+      {/* Footnote */}
+      <div className="absolute bottom-2 text-[12px] text-gray-500 text-center w-full">
+        Featuring an image of my cat, Luna. Don't be fooled, she is a menace.
       </div>
     </div>
   );
